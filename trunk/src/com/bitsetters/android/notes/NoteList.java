@@ -40,7 +40,7 @@ public class NoteList extends ListActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()) {
 		case ADD_INDEX:
-		    //addNote();
+		    addNote();
 		    break;
 		case HELP_INDEX:
 		    Intent help = new Intent(this, Help.class);
@@ -50,6 +50,10 @@ public class NoteList extends ListActivity {
 		return super.onOptionsItemSelected(item);
     }
 
+   protected void addNote() {
+	   Intent i = new Intent(this, NoteEdit.class);
+	   startActivityForResult(i, 1);
+   }
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
