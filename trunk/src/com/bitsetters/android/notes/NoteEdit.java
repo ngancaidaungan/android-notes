@@ -18,13 +18,43 @@ package com.bitsetters.android.notes;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 
 public class NoteEdit extends Activity {
 
-	/** Called when the activity is first created. */
+	protected Button save_btn;
+	protected Button cancel_btn;
+	protected EditText edit_txt;
+	
+    private final OnClickListener save_click = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			//db.addNote();
+			finish();
+		}
+    };
+    
+    private final OnClickListener cancel_click = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			finish();
+		}
+    };
+	
+	/**
+	 *  Called when the activity is first created.
+	 */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.note_edit);
+        save_btn = (Button) findViewById(R.id.save_note);
+        save_btn.setOnClickListener(save_click);
+        cancel_btn = (Button) findViewById(R.id.cancel_note);
+        cancel_btn.setOnClickListener(cancel_click);
+        edit_txt = (EditText) findViewById(R.id.edit_note);
     }
 }
