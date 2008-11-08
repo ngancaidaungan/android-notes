@@ -2,5 +2,12 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry kind="lib" path="gdata/java/lib/gdata-base-1.0.jar"/>
+	<classpathentry kind="lib" path="gdata/java/lib/gdata-client-1.0.jar"/>
+	<classpathentry kind="lib" path="gdata/java/lib/gdata-client-meta-1.0.jar"/>
+	<classpathentry kind="lib" path="gdata/java/lib/gdata-core-1.0.jar"/>
+	<classpathentry kind="lib" path="gdata/java/lib/gdata-docs-1.0.jar"/>
+	<classpathentry kind="lib" path="gdata/java/lib/gdata-docs-meta-1.0.jar"/>
+	<classpathentry kind="lib" path="gdata/java/lib/gdata-media-1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
