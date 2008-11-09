@@ -27,10 +27,9 @@ public class NoteEdit extends Activity {
 
 	protected Button save_btn;
 	protected Button cancel_btn;
-	protected EditText edit_txt;
+	protected EditText edit_txt;	
 	
     private final OnClickListener save_click = new OnClickListener() {
-		@Override
 		public void onClick(View v) {
 			//db.addNote();
 			finish();
@@ -38,7 +37,6 @@ public class NoteEdit extends Activity {
     };
     
     private final OnClickListener cancel_click = new OnClickListener() {
-		@Override
 		public void onClick(View v) {
 			finish();
 		}
@@ -47,7 +45,6 @@ public class NoteEdit extends Activity {
 	/**
 	 *  Called when the activity is first created.
 	 */
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.note_edit);

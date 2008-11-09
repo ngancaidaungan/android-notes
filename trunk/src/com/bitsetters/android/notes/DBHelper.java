@@ -205,8 +205,8 @@ public class DBHelper {
 	            NoteEntry row = new NoteEntry();
 	            row.id = c.getInt(0);
 	            
-	            row.description = c.getString(2);
-	            row.note = c.getString(5);
+	            row.description = c.getString(1);
+	            row.note = c.getString(2);
 	            
 	            ret.add(row);
 	            c.moveToNext();
