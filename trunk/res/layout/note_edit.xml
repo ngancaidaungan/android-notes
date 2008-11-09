@@ -21,7 +21,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
-						  
+		
+	<TextView android:id="@+id/edit_desc_lbl"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/description" />
+			
+	<EditText android:id="@+id/edit_desc"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:singleLine="true" 
+		android:maxLength="30"
+		/>					  
+							  
 	<EditText android:id="@+id/edit_note" 
 	  	android:layout_width="fill_parent"
 	 	android:layout_height="fill_parent"
