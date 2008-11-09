@@ -25,7 +25,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 public class NoteList extends ListActivity {
 
@@ -82,6 +84,9 @@ public class NoteList extends ListActivity {
 		if (dbHelper == null) {
 		    dbHelper = new DBHelper(this);
 		}
+		
+        fillData();
+
     }
     
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -114,7 +119,8 @@ public class NoteList extends ListActivity {
     
    protected void addNote() {
 	   Intent i = new Intent(this, NoteEdit.class);
-	   startActivityForResult(i, 1);
+	   i.putExtra("id", -1);
+	   startActivity(i);
    }
     
     @Override
@@ -129,6 +135,15 @@ public class NoteList extends ListActivity {
 			.setIcon(android.R.drawable.ic_menu_help);
 
 		return super.onCreateOptionsMenu(menu);
+    }
+    
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+    	super.onListItemClick(l, v, position, id);
+
+    	Intent i = new Intent(this, NoteEdit.class);
+    	i.putExtra("id", rows.get(position).id);
+    	startActivity(i);
     }
 
 }
