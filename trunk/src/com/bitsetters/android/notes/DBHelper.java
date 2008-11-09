@@ -233,12 +233,12 @@ public class DBHelper {
 			db = myCtx.openOrCreateDatabase(DATABASE_NAME, 0,null);
 	        Cursor c =
 	            db.query(true, TABLE_NOTES, new String[] {
-	                "id", "description", "note", "category"}, "id=" + Id, null, null, null, null, null);
+	                "id", "description", "note", "lastedit"}, "id=" + Id, null, null, null, null, null);
 	        if (c.getCount() > 0) {
 	            c.moveToFirst();
 	            row.id = c.getInt(0);
-	            row.description = c.getString(2);
-	            row.note = c.getString(5);
+	            row.description = c.getString(1);
+	            row.note = c.getString(2);
 	        } else {
 	            row.id = -1;
 	        }
