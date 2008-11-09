@@ -26,16 +26,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class NoteList extends ListActivity {
 
 	public static final String TAG = "NoteList";
-	public static final int EDIT_INDEX = Menu.FIRST;
-	public static final int ADD_INDEX = Menu.FIRST + 1;
+	public static final int ADD_INDEX = Menu.FIRST;
+	public static final int SETTINGS_INDEX = Menu.FIRST + 1;
 	public static final int HELP_INDEX = Menu.FIRST + 2;
-
+	
 	private List<NoteEntry> rows;
     private DBHelper dbHelper=null;
 
@@ -59,7 +60,6 @@ public class NoteList extends ListActivity {
 		
 		Log.d(TAG,"onPause()");
 		if (dbHelper != null) {
-			dbHelper.close();
 			dbHelper = null;
 		}
     }
@@ -70,7 +70,6 @@ public class NoteList extends ListActivity {
 		
 		Log.d(TAG,"onStop()");
 		if (dbHelper != null) {
-			dbHelper.close();
 			dbHelper=null;
 		}
     }
@@ -86,7 +85,6 @@ public class NoteList extends ListActivity {
 		}
 		
         fillData();
-
     }
     
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -102,6 +100,16 @@ public class NoteList extends ListActivity {
 		return super.onOptionsItemSelected(item);
     }
 
+   private String get_description(NoteEntry ent) {
+	   String first = ent.note.split("\\n")[0];
+	   if (first.length() > 30) {
+		   first = first.substring(0, 27) + "...";
+	   }
+	   return first;
+   }
+   
+   
+    
    private void fillData() {
 	   
 	  rows = dbHelper.fetchAllRows();
@@ -109,7 +117,7 @@ public class NoteList extends ListActivity {
 	  List<String> items = new ArrayList<String>();
 
 	  for(NoteEntry ent : rows) {
-		  items.add(ent.description);
+		  items.add(get_description(ent));
 	  }
 	   
 	   ArrayAdapter<String> entries = 
@@ -130,6 +138,9 @@ public class NoteList extends ListActivity {
 		menu.add(0,ADD_INDEX, 0, R.string.add)
 			.setIcon(android.R.drawable.ic_menu_add)
 			.setShortcut('1', 'a');
+		menu.add(0, SETTINGS_INDEX, 0, R.string.settings)
+			.setShortcut('2','s')
+			.setIcon(android.R.drawable.ic_menu_preferences);
 		menu.add(0, HELP_INDEX, 0, R.string.help)
 			.setShortcut('9', 'h')
 			.setIcon(android.R.drawable.ic_menu_help);

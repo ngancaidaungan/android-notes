@@ -22,38 +22,24 @@
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
 		
-	<TextView android:id="@+id/edit_desc_lbl"
+	<view  xmlns:android="http://schemas.android.com/apk/res/android"
+	    class="com.bitsetters.android.notes.NoteEdit$NoteHeader"
+	    android:id="@+id/header_lbl"
 		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:text="@string/description" />
-			
-	<EditText android:id="@+id/edit_desc"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:singleLine="true" 
-		android:maxLength="30"
-		/>					  
-							  
-	<EditText android:id="@+id/edit_note" 
+		android:layout_height="30px"
+		android:text="date" 
+		android:background="@drawable/legalpad_yellow"
+		/>			  
+
+	<view xmlns:android="http://schemas.android.com/apk/res/android"
+		android:id="@+id/edit_note" 
+	    class="com.bitsetters.android.notes.NoteEdit$LinedEditText"
 	  	android:layout_width="fill_parent"
 	 	android:layout_height="fill_parent"
 		android:layout_weight="1"
+    	android:fadingEdge="vertical"
 		android:scrollbars="vertical" 
-		android:gravity="top|left"/>
-
-	<LinearLayout
-		android:orientation="horizontal" android:layout_width="fill_parent"
-		android:layout_height="wrap_content">
-	
-		<Button android:id="@+id/save_note" 
-		  	android:text="@string/save"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content" />
-
-		<Button android:id="@+id/cancel_note" 
-		  	android:text="@string/cancel"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content" />
-	
-	</LinearLayout>
+		android:background="@drawable/legalpad_yellow"
+		android:gravity="top|left"
+		android:longClickable="true"/>
 </LinearLayout>

@@ -19,17 +19,7 @@
 -->
 
 <resources>
-    <string name="app_name">Notes</string>
-    <string name="authors">Steven Osborn, Ben Stover</string>
-    <string name="version">0.1.0</string>
-    <string name="empty">No Notes.</string>
-    <string name="notes">Notes</string>
-	<string name="cancel">Cancel</string>
-    <string name="save">Save</string>
-    <string name="edit">Edit</string>
-    <string name="add">Add</string>
-    <string name="delete">Delete</string>
-    <string name="close">Close</string>
-	<string name="help">Help</string>
-	<string name="settings">Settings</string>
+        <drawable name="legalpad_yellow">#FFFA9C</drawable>
+		<drawable name="legalpad_blue">#A8E08F</drawable>
+		<drawable name="legalpad_red">#FFB88E</drawable>
 </resources>

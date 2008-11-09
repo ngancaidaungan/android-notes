@@ -50,7 +50,6 @@ public class DBHelper {
     private static final String NOTES_CREATE =
         "create table " + TABLE_NOTES + " ("
     	    + "id integer primary key autoincrement, "
-            + "description text not null, "
             + "note text, "
             + "lastedit text);";
 
@@ -93,11 +92,9 @@ public class DBHelper {
 			c.close();
 			
 
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			Log.d(TAG,"SQLite exception: " + e.getLocalizedMessage());
-		} finally 
-		{
+		} finally {
 			db.close();
 		}
     }
@@ -111,8 +108,7 @@ public class DBHelper {
 			db.insert(TABLE_DBVERSION, null, args);
 
 			db.execSQL(NOTES_CREATE);
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			Log.d(TAG,"SQLite exception: " + e.getLocalizedMessage());
 		} 
     }
@@ -123,11 +119,9 @@ public class DBHelper {
 			db = myCtx.openOrCreateDatabase(DATABASE_NAME, 0,null);
 			db.execSQL(NOTES_DROP);
 			db.execSQL(NOTES_CREATE);
-        } catch (SQLException e)
-		{
+        } catch (SQLException e) {
 			Log.d(TAG,"SQLite exception: " + e.getLocalizedMessage());
-		} finally 
-		{
+		} finally {
 			db.close();
 		}    	
     }
@@ -136,14 +130,11 @@ public class DBHelper {
      * Close database connection
      */
     public void close() {
-    /*
     	try {
     		db.close();
-	    } catch (SQLException e)
-	    {
+	    } catch (SQLException e) {
 	    	Log.d(TAG,"close exception: " + e.getLocalizedMessage());
 	    }
-	    */
     }
 
 ////////// Notes Functions ////////////////
@@ -155,17 +146,14 @@ public class DBHelper {
 	 */
 	public void addNote(NoteEntry entry) {
 	    ContentValues initialValues = new ContentValues();
-	    initialValues.put("description", entry.description);
 	    initialValues.put("note", entry.note);
 	
 	    try {
 			db = myCtx.openOrCreateDatabase(DATABASE_NAME, 0,null);
 	        db.insert(TABLE_NOTES, null, initialValues);
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			Log.d(TAG,"SQLite exception: " + e.getLocalizedMessage());
-		} finally 
-		{
+		} finally {
 			db.close();
 		}
 	}
@@ -178,11 +166,9 @@ public class DBHelper {
 	    try {
 			db = myCtx.openOrCreateDatabase(DATABASE_NAME, 0,null);
 			db.delete(TABLE_NOTES, "id=" + Id, null);
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			Log.d(TAG,"SQLite exception: " + e.getLocalizedMessage());
-		} finally 
-		{
+		} finally {
 			db.close();
 		}
 	}
@@ -197,26 +183,22 @@ public class DBHelper {
 			db = myCtx.openOrCreateDatabase(DATABASE_NAME, 0,null);
 	        Cursor c;
 	        c = db.query(TABLE_NOTES, new String[] {
-                "id", "description", "note"},
+                "id", "note"},
                 null, null, null, null, null);
 	        int numRows = c.getCount();
 	        c.moveToFirst();
 	        for (int i = 0; i < numRows; ++i) {
 	            NoteEntry row = new NoteEntry();
 	            row.id = c.getInt(0);
-	            
-	            row.description = c.getString(1);
-	            row.note = c.getString(2);
+	            row.note = c.getString(1);
 	            
 	            ret.add(row);
 	            c.moveToNext();
 	        }
 	        c.close();
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			Log.d(TAG,"SQLite exception: " + e.getLocalizedMessage());
-		} finally 
-		{
+		} finally {
 			db.close();
 		}
 	    return ret;
@@ -233,21 +215,18 @@ public class DBHelper {
 			db = myCtx.openOrCreateDatabase(DATABASE_NAME, 0,null);
 	        Cursor c =
 	            db.query(true, TABLE_NOTES, new String[] {
-	                "id", "description", "note", "lastedit"}, "id=" + Id, null, null, null, null, null);
+	                "id", "note", "lastedit"}, "id=" + Id, null, null, null, null, null);
 	        if (c.getCount() > 0) {
 	            c.moveToFirst();
 	            row.id = c.getInt(0);
-	            row.description = c.getString(1);
-	            row.note = c.getString(2);
+	            row.note = c.getString(1);
 	        } else {
 	            row.id = -1;
 	        }
 	        c.close();
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			Log.d(TAG,"SQLite exception: " + e.getLocalizedMessage());
-		} finally 
-		{
+		} finally {
 			db.close();
 		}
 	    return row;
@@ -260,20 +239,16 @@ public class DBHelper {
 	 */
 	public void updateNote(long Id, NoteEntry entry) {
 	    ContentValues args = new ContentValues();
-	    args.put("description", entry.description);
 	    args.put("note", entry.note);
 	    
 	    try {
 			db = myCtx.openOrCreateDatabase(DATABASE_NAME, 0,null);
 			db.update(TABLE_NOTES, args, "id=" + Id, null);
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			Log.d(TAG,"SQLite exception: " + e.getLocalizedMessage());
-		} finally 
-		{
+		} finally {
 			db.close();
 		}
 	}
-
 }
 

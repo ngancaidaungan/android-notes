@@ -20,7 +20,6 @@ import java.sql.Timestamp;
 
 public class NoteEntry {
 	public int id;
-	public String description;
 	public String note;
 	public Timestamp lastedit;
 }

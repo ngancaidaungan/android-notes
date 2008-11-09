@@ -17,15 +17,17 @@
 package com.bitsetters.android.notes;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class NoteEdit extends Activity {
 
@@ -34,12 +36,91 @@ public class NoteEdit extends Activity {
 	public static final int DELETE_INDEX = Menu.FIRST;
 	
 	private NoteEntry note;
-	protected Button save_btn;
-	protected Button cancel_btn;
-	protected EditText description;
 	protected EditText edit_txt;	
 	
     private DBHelper dbHelper=null;
+
+    public static class NoteHeader extends TextView {
+		private Paint mLine;
+
+    	public NoteHeader(Context context, AttributeSet attrs) {
+			super(context, attrs);
+			
+			setPadding(20, 0, 0, 0);
+			
+			setHeight(20);
+			mLine = new Paint();
+			mLine.setStyle(Paint.Style.STROKE);
+			mLine.setARGB(100, 255, 0, 0);
+    	}
+       		
+    	   @Override
+           protected void onDraw(Canvas canvas) {               
+               Paint paint = mLine;
+
+               canvas.drawLine(getLeft(), getHeight() -1, getRight(), getHeight()  -1, paint);
+               canvas.drawLine(10, getTop(), 10, getBottom(), paint);
+               canvas.drawLine(15, getTop(), 15, getBottom(), paint);
+ 
+               super.onDraw(canvas);
+           }    	
+    }
+
+    
+    /**
+     * A custom EditText that draws lines between each line of text that is displayed.
+     */
+    public static class LinedEditText extends EditText {
+        private Rect mRect;
+        private Paint mPaint;
+        private Paint mVert;
+
+        
+        // we need this constructor for LayoutInflater
+        public LinedEditText(Context context, AttributeSet attrs) {
+            super(context, attrs);
+
+            mRect = new Rect();
+            mPaint = new Paint();
+            mPaint.setStyle(Paint.Style.STROKE);
+            mPaint.setARGB(100, 0, 0, 255);
+            mVert = new Paint();
+            mVert.setStyle(Paint.Style.STROKE);
+            mVert.setARGB(100, 255, 0, 0);
+            setPadding(20, 0, 0, 0);
+        }
+
+        @Override
+        protected void onDraw(Canvas canvas) {
+            int count = getLineCount();
+            
+            Rect r = mRect;
+            Paint paint = mPaint;
+
+//            int height = getHeight();
+//            int line_height = getLineHeight();
+//            int count = height / line_height;
+//            
+//            for (int i=1; i< count; i++) {
+//            	int posY = i*line_height;
+//            	canvas.drawLine(getLeft(), posY + 1, getRight(), posY + 1, paint);
+//            }
+//            
+//        	canvas.drawLine(10, getTop(), 10, getBottom(), mVert);
+//        	canvas.drawLine(15, getTop(), 15, getBottom(), mVert);
+
+            
+            for (int i = 0; i < count; i++) {
+                int baseline = getLineBounds(i, r);
+
+                canvas.drawLine(r.left - 20, baseline + 1, r.right, baseline + 1, paint);
+                canvas.drawLine(10, r.top, 10, r.bottom, mVert);
+                canvas.drawLine(15, r.top, 15, r.bottom, mVert);
+            }
+
+            super.onDraw(canvas);
+        }
+    }
 
     
     @Override
@@ -72,29 +153,18 @@ public class NoteEdit extends Activity {
     private void deleteNote() {
     	dbHelper.deleteNote(note.id);
     }
-    
-    private final OnClickListener save_click = new OnClickListener() {
-		public void onClick(View v) {
-			note.note = edit_txt.getText().toString();
-			note.description = description.getText().toString();
-			if (note.id >= 0) {
-				// Editing an existing note
-				dbHelper.updateNote(note.id, note);
-			}
-			else {
-				// Creating a note
-				dbHelper.addNote(note);
-			}
-			finish();
-		}
-    };
-    
-    private final OnClickListener cancel_click = new OnClickListener() {
-		public void onClick(View v) {
-			finish();
-		}
-    };
 	
+    private void save() {
+		note.note = edit_txt.getText().toString();
+		if (note.id >= 0) {
+			// Editing an existing note
+			dbHelper.updateNote(note.id, note);
+		}
+		else {
+			// Creating a note
+			dbHelper.addNote(note);
+		}
+    }
 	    
     @Override
     protected void onPause() {
@@ -102,7 +172,7 @@ public class NoteEdit extends Activity {
 		
 		Log.d(TAG,"onPause()");
 		if (dbHelper != null) {
-			dbHelper.close();
+			save();
 			dbHelper = null;
 		}
     }
@@ -110,10 +180,9 @@ public class NoteEdit extends Activity {
     @Override
     public void onStop() {
 		super.onStop();
-		
 		Log.d(TAG,"onStop()");
 		if (dbHelper != null) {
-			dbHelper.close();
+			save();
 			dbHelper=null;
 		}
     }
@@ -134,15 +203,13 @@ public class NoteEdit extends Activity {
 	 */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.note_edit);
-        save_btn = (Button) findViewById(R.id.save_note);
-        save_btn.setOnClickListener(save_click);
-        description = (EditText) findViewById(R.id.edit_desc);
-        cancel_btn = (Button) findViewById(R.id.cancel_note);
-        cancel_btn.setOnClickListener(cancel_click);
-        edit_txt = (EditText) findViewById(R.id.edit_note);
         
-    	if (dbHelper==null) {
+        setContentView(R.layout.note_edit);
+        edit_txt = (EditText) findViewById(R.id.edit_note);
+        edit_txt.setLongClickable(true);
+        
+
+        if (dbHelper==null) {
 			dbHelper = new DBHelper(this);
 		}
     	
@@ -151,11 +218,11 @@ public class NoteEdit extends Activity {
         if (id >= 0) {
 	        note = dbHelper.fetchNote(id);
 	        edit_txt.setText(note.note);
-	        description.setText(note.description);
         }
         else {
         	note = new NoteEntry();
         	note.id = -1;
         }
     }
+    
 }
