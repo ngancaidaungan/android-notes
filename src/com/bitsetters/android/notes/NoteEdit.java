@@ -17,8 +17,11 @@
 package com.bitsetters.android.notes;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -28,6 +31,8 @@ public class NoteEdit extends Activity {
 
 	public static final String TAG = "NoteEdit";
 
+	public static final int DELETE_INDEX = Menu.FIRST;
+	
 	private NoteEntry note;
 	protected Button save_btn;
 	protected Button cancel_btn;
@@ -36,6 +41,37 @@ public class NoteEdit extends Activity {
 	
     private DBHelper dbHelper=null;
 
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+	
+		menu.add(0,DELETE_INDEX, 0, R.string.delete)
+			.setIcon(android.R.drawable.ic_menu_delete)
+			.setShortcut('1', 'd');
+
+		return super.onCreateOptionsMenu(menu);
+    }
+    
+    public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()) {
+		case DELETE_INDEX:
+		    deleteNote();
+		    finish();
+		    break;
+		}
+		return super.onOptionsItemSelected(item);
+    }
+    
+    @Override
+    public boolean onMenuOpened(int featureId, Menu menu) {
+    	menu.findItem(DELETE_INDEX).setEnabled(note.id >= 0);
+    	return super.onMenuOpened(featureId, menu);
+    }
+    
+    private void deleteNote() {
+    	dbHelper.deleteNote(note.id);
+    }
     
     private final OnClickListener save_click = new OnClickListener() {
 		public void onClick(View v) {
